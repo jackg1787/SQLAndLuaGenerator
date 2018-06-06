@@ -3,7 +3,7 @@
 import os
 import csv
 
-# DISCLAMER AND INSTRUCTIONA
+# DISCLAMER AND INSTRUCTIONs
 print("""    ###########################################################################################################
     #                                                                                                         #
     # Script to create the parsing script and create script for a sql save connector                          #
@@ -256,9 +256,14 @@ elif TypeOfSQL == '2':
             
             for j in range(i+1,len(fullcsv)):
                 if fullcsv[j][0]=='    FIELD':
-                    line2 =", "+fullcsv[j][1]+" VARCHAR(" +fullcsv[j][2]+")"
-                    file2.write(line2)
-                    j=j+1
+                    if int(fullcsv[j][2])< 8000:
+                        line2 =", "+fullcsv[j][1]+" VARCHAR(" +fullcsv[j][2]+")"
+                        file2.write(line2)
+                        j=j+1
+                    else:
+                        line2 =", "+fullcsv[j][1]+" VARCHAR(MAX)"
+                        file2.write(line2)
+                        j=j+1
                 else:
                     file2.write("); \n \n")
                     break 
@@ -275,9 +280,14 @@ elif TypeOfSQL == '2':
                 list1 = ''
                 for j in range(i+1,len(fullcsv)):
                     if fullcsv[j][0]=='    FIELD':
-                        line3 ="@"+fullcsv[j][1]+" VARCHAR(" +fullcsv[j][2]+") = \'\',\n"
-                        list1=list1+line3
-                        j=j+1
+                        if int(fullcsv[j][2])< 8000:
+                            line3 ="@"+fullcsv[j][1]+" VARCHAR(" +fullcsv[j][2]+") = \'\',\n"
+                            list1=list1+line3
+                            j=j+1
+                        else:
+                            line3 ="@"+fullcsv[j][1]+" VARCHAR(MAX) = \'\',\n"
+                            list1=list1+line3
+                            j=j+1
                         
                     else:
                         list1 = list1[:-2]
